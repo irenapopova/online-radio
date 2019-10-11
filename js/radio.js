@@ -16,7 +16,7 @@ $(document).ready(function() {
     var previousBg = 1;
     var maxNumberofBg = 24;
 
-    var isStationDataLoaded = false,
+    var isStationDataLoaded = false;
 
     var    isClosed = false;
 
