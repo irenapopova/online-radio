@@ -1,6 +1,12 @@
 $(document).ready(function() {
     'use strict';
 
+    var $trigger = $('.hamburger');
+    var $stationList = $(".stations");
+    var $wrapper = $('#wrapper')
+
+
+
     var liveRadioListUrl = "https://cdn2.radio.garden/live.json";
 
     var places = {};
@@ -10,22 +16,23 @@ $(document).ready(function() {
     var previousBg = 1;
     var maxNumberofBg = 24;
 
-    var trigger = $('.hamburger'),
-        isClosed = false;
+    var isStationDataLoaded = false,
+
+    var    isClosed = false;
 
     // ========================================================================
     // Event Listeners
     // ========================================================================
-    trigger.click(function() {
+    $trigger.click(function() {
         hamburger_cross();
     });
 
     $('[data-toggle="offcanvas"]').click(function() {
-        $('#wrapper').toggleClass('toggled');
+        $wrapper.toggleClass('toggled');
     });
 
     $(document).on('click', '[data-city]', function() {
-        trigger.click();
+        $trigger.click();
         renderStationList($(this).attr('data-city'));
     });
 
@@ -47,12 +54,12 @@ $(document).ready(function() {
     function hamburger_cross() {
 
         if (isClosed == true) {
-            trigger.removeClass('is-open');
-            trigger.addClass('is-closed');
+            $trigger.removeClass('is-open');
+            $trigger.addClass('is-closed');
             isClosed = false;
         } else {
-            trigger.removeClass('is-closed');
-            trigger.addClass('is-open');
+            $trigger.removeClass('is-closed');
+            $trigger.addClass('is-open');
             isClosed = true;
         }
     }
@@ -88,8 +95,6 @@ $(document).ready(function() {
     // ========================================================================
 
     function renderStationList(cityName) {
-        var stationList = $(".stations");
-        stationList.html("");
         var stations;
 
         for (const place of places) {
@@ -102,7 +107,7 @@ $(document).ready(function() {
         const stationData = stations.map((index) => channels[index]);
 
         for (const channel of stationData) {
-            stationList.append('<li><a data-id="' + channel.id + '"><h3>' + channel.name + '</h3></a></li>');
+            $stationList.append('<li><a data-id="' + channel.id + '"><h3>' + channel.name + '</h3></a></li>');
         }
     }
 
@@ -153,12 +158,16 @@ $(document).ready(function() {
     // ========================================================================
     // Download Station List data
     // ========================================================================
+    $stationList.html("Loading...");
+
+
     $.ajax({
         url : liveRadioListUrl
     }).done(function(res) {
         places = res.places;
         channels = res.channels;
-
+        isStationDataLoaded = true;
+        $stationList.html("");
         renderCityList();
 
         setTimeout(function () {
