@@ -1,7 +1,7 @@
 $(document).ready(function() {
     'use strict';
 
-    var liveRadioListUrl = "http://cdn2.radio.garden/live.json";
+    var liveRadioListUrl = "https://cdn2.radio.garden/live.json";
 
     var places = {};
     var selectedStationList = [];
