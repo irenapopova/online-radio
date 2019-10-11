@@ -95,6 +95,7 @@ $(document).ready(function() {
     // ========================================================================
 
     function renderStationList(cityName) {
+        clearStationList()
         var stations;
 
         for (const place of places) {
@@ -154,6 +155,10 @@ $(document).ready(function() {
 
         changeBg();
     }
+
+function clearStationList() {
+    $stationList.html("");
+}
 
     // ========================================================================
     // Download Station List data
