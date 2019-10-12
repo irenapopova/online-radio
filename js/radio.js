@@ -4,8 +4,7 @@ $(document).ready(function() {
     var $trigger = $('.hamburger');
     var $stationList = $(".stations");
     var $wrapper = $('#wrapper')
-
-
+    var $search = $('#search')
 
     var liveRadioListUrl = "https://cdn2.radio.garden/live.json";
 
@@ -26,6 +25,12 @@ $(document).ready(function() {
     $trigger.click(function() {
         hamburger_cross();
     });
+
+    $search.on("change", function() {
+        var search = $(this)
+        var val = search.val()
+        renderCityList(val)
+    })
 
     $('[data-toggle="offcanvas"]').click(function() {
         $wrapper.toggleClass('toggled');
@@ -112,13 +117,15 @@ $(document).ready(function() {
         }
     }
 
-    function renderCityList() {
+    function renderCityList(searchString) {
         var cities = $(".city");
         var list = places || [];
 
         cities.html("");
 
-        for (const city of places) {
+        const filteredCites = !searchString ? list : places.filter(city => city.name.toLowerCase().includes(searchString.toLowerCase()))
+
+        for (const city of filteredCites) {
             cities.append('<li><a data-city="' + city.name + '">' + city.name + '</a></li>');
 
             renderStationList(city.name);
